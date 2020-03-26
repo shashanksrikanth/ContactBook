@@ -27,22 +27,19 @@ def create_table(connection, create_table_sql):
 def initialize_database():
     # Initialize a database by creating a connection and creating tables
     current_directory = os.getcwd()
-    db_file = current_directory+"/ContactBook/database.db"
-    print(db_file)
+    db_file = current_directory+"/contactbook/database.db"
     user_table = """ DROP TABLE IF EXISTS user;
                     CREATE TABLE user (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
                         username TEXT UNIQUE NOT NULL,
                         password TEXT NOT NULL
                     );"""
     contact_table = """ DROP TABLE IF EXISTS contact;
                     CREATE TABLE contact (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        user_id INTEGER NOT NULL,
+                        username TEXT, 
                         name TEXT NOT NULL,
                         email TEXT NOT NULL,
                         phone TEXT NOT NULL,
-                        FOREIGN KEY (user_id) REFERENCES user (id)
+                        FOREIGN KEY (username) REFERENCES user (username)
                     );"""
     connection = create_connection(db_file)
     if connection is not None:
@@ -55,22 +52,26 @@ def initialize_database():
 def check_registration(username):
     # Check if a user is registered in the database
     current_directory = os.getcwd()
-    db_file = current_directory+"/ContactBook/database.db"
+    db_file = current_directory+"/contactbook/database.db"
     connection = create_connection(db_file)
     cur = connection.cursor()
     cur.execute("SELECT * FROM user WHERE username=?", (username,))
     if cur.fetchone() is not None: 
-        return True
+        userExists = True
     else:
-        return False
+        userExists = False
+    row = cur.fetchone()
+    while row is not None:
+        row = cur.fetchone()
+    return userExists
 
 def register_user(credentials):
     # Register a user in the database
     current_directory = os.getcwd()
-    db_file = current_directory+"/ContactBook/database.db"
+    db_file = current_directory+"/contactbook/database.db"
     connection = create_connection(db_file)
     cur = connection.cursor()
-    sql_command = '''INSERT INTO user(username, password)
-                     VALUES(?,?)'''
+    sql_command = "INSERT INTO user(username, password) VALUES(?,?)"
     cur.execute(sql_command, credentials)
+    connection.commit()
     return cur.lastrowid
