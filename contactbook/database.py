@@ -60,9 +60,6 @@ def check_registration(username):
         userExists = True
     else:
         userExists = False
-    row = cur.fetchone()
-    while row is not None:
-        row = cur.fetchone()
     return userExists
 
 def register_user(credentials):

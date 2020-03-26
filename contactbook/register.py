@@ -16,7 +16,6 @@ def register_user(username, password):
         credentials = (username, password)
         confirmation = database.register_user(credentials)
         if confirmation is not None:
-            print(confirmation)
             click.echo("User successfully registered!")
         else:
             click.echo("Error in registering user")
