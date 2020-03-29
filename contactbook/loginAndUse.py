@@ -1,6 +1,7 @@
 # Login to the application and use it
 from contactbook import database
 import click
+from pyfiglet import Figlet
 
 def login(username, password):
     result = database.check_login(username, password)
@@ -14,4 +15,8 @@ def login(username, password):
 @click.option('--username', prompt='Enter username', required=True)
 @click.option('--password', prompt='Enter password', required=True, hide_input=True)
 def run_commands(username, password):
-    click.echo(login(username, password))
+    login_successful = login(username, password)
+    if not login_successful:
+        return
+    f = Figlet(font='big')
+    click.echo(f.renderText('Contact Book'))
