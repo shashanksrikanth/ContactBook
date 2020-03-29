@@ -21,3 +21,14 @@ setup(
         'console_scripts': ['register-user = contactbook.register:register_user']
     }
 )
+
+setup(
+    name='run-contactbook',
+    version='0.1',
+    author_email='sshashank1999@gmail.com',
+    package_data={},
+    install_requires=['click', 'werkzeug'],
+    entry_points={
+        'console_scripts': ['run-contactbook = contactbook.loginAndUse:run_commands']
+    }
+)

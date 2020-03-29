@@ -4,6 +4,7 @@ import sqlite3
 from sqlite3 import Error
 import os
 import click
+from werkzeug.security import check_password_hash
 
 def create_connection(db_file):
     # Create a connection to a SQLite database
@@ -72,3 +73,22 @@ def register_user(credentials):
     cur.execute(sql_command, credentials)
     connection.commit()
     return cur.lastrowid
+
+def check_login(username, password):
+    # Check if username and password are correct
+    result = []
+    current_directory = os.getcwd()
+    db_file = current_directory+"/contactbook/database.db"
+    connection = create_connection(db_file)
+    cur = connection.cursor()
+    record = cur.execute("SELECT * FROM user WHERE username=?", (username,)).fetchone()
+    if record is None:
+        result[0] = False
+        result[1] = "Incorrect username. Have you registered as a user?"
+    elif not check_password_hash(record['password'], password):
+        result[0] = False
+        result[1] = "Incorrect password."
+    else:
+        result[0] = True
+        result[1] = "Login successful!"
+    return result

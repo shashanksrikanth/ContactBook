@@ -13,7 +13,7 @@ def register_user(username, password):
     if database.check_registration(username) is True:
         click.echo("User is already registered")
     else:
-        credentials = (username, password)
+        credentials = (username, generate_password_hash(password))
         confirmation = database.register_user(credentials)
         if confirmation is not None:
             click.echo("User successfully registered!")
