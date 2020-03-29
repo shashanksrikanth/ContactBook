@@ -92,3 +92,34 @@ def check_login(username, password):
         result.append(True)
         result.append("Login successful!")
     return result
+
+def insert_contact(information):
+    # Insert a contact into the contact book
+    current_directory = os.getcwd()
+    db_file = current_directory+"/contactbook/database.db"
+    connection = create_connection(db_file)
+    cur = connection.cursor()
+    sql_command = "INSERT INTO contact(username, name, email, phone) VALUES(?,?,?,?)"
+    cur.execute(sql_command, information)
+    connection.commit()
+    return cur.lastrowid
+
+def get_contact(username, contactname):
+    # Get contact information for one person
+    current_directory = os.getcwd()
+    db_file = current_directory+"/contactbook/database.db"
+    connection = create_connection(db_file)
+    cur = connection.cursor()
+    cur.execute("SELECT * FROM contact WHERE username=? AND name=?",(username,contactname,))
+    contacts = cur.fetchall()
+    return contacts
+
+def get_all_contacts(username):
+    # Get all contacts of a user
+    current_directory = os.getcwd()
+    db_file = current_directory+"/contactbook/database.db"
+    connection = create_connection(db_file)
+    cur = connection.cursor()
+    cur.execute("SELECT * FROM contact WHERE username=?",(username,))
+    contacts = cur.fetchall()
+    return contacts
