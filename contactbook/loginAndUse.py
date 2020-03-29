@@ -14,4 +14,4 @@ def login(username, password):
 @click.option('--username', prompt='Enter username', required=True)
 @click.option('--password', prompt='Enter password', required=True, hide_input=True)
 def run_commands(username, password):
-    login(username, password)
+    click.echo(login(username, password))

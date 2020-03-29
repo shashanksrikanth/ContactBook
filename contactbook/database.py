@@ -83,12 +83,12 @@ def check_login(username, password):
     cur = connection.cursor()
     record = cur.execute("SELECT * FROM user WHERE username=?", (username,)).fetchone()
     if record is None:
-        result[0] = False
-        result[1] = "Incorrect username. Have you registered as a user?"
-    elif not check_password_hash(record['password'], password):
-        result[0] = False
-        result[1] = "Incorrect password."
+        result.append(False)
+        result.append("Incorrect username. Have you registered as a user?")
+    elif not check_password_hash(record[1], password):
+        result.append(False)
+        result.append("Incorrect password.")
     else:
-        result[0] = True
-        result[1] = "Login successful!"
+        result.append(True)
+        result.append("Login successful!")
     return result
