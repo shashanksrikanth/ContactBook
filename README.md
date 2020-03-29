@@ -1,5 +1,5 @@
 # ContactBook
-This is a command-line application imitating the functionality of a contact book. It provides authentication, adding contacts, updating contacts, deleting contacts, and providing an option for backups to the user's local machine.
+This is a command-line application imitating the functionality of a contact book. 
 
 ## Technologies used
 This list will be updated as the application grows in complexity. 
